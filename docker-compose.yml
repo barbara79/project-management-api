@@ -10,10 +10,10 @@ services:
       - ./:/var/www/html
     working_dir: /var/www/html
     depends_on:
-      - db
+      - database
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: nginx
     ports:
       - "8080:80"
@@ -23,20 +23,20 @@ services:
     depends_on:
       - php
 
-  db:
-    image: mysql:8
-    container_name: db
+  database:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: project_management
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+        MYSQL_DATABASE: ${MYSQL_DATABASE:-project_management}
+        MYSQL_USER: ${MYSQL_USER:-user}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
     ports:
       - "3306:3306"
-
-  composer:
-    image: composer:2
-    container_name: composer
-    working_dir: /var/www/html
     volumes:
-      - ./:/var/www/html
+        - database_data:/var/lib/mysql
+
+volumes:
+    database_data:
+
