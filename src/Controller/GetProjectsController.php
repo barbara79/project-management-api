@@ -16,7 +16,7 @@ class GetProjectsController extends AbstractController
         methods: ['GET'],
         requirements: ['_format' => 'json']
     )]
-    public function getProjects(ProjectRepository $projectRepository): JsonResponse
+    public function getProjects(ProjectRepository $projectRepository)
     {
         $projects = $projectRepository->findAll();
 

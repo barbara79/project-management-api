@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class GetProjectByIdController extends AbstractController
 {
@@ -15,9 +15,8 @@ class GetProjectByIdController extends AbstractController
         requirements: ['projectId' => '\d+'],
         methods: ['GET'],
     )]
-    public function getProjectById(int $projectId, ProjectRepository $projectRepository): JsonResponse
+    public function getProjectById(int $projectId, ProjectRepository $projectRepository)
     {
-        error_log('>>> GetProjectByIdController triggered');
         $project = $projectRepository->find($projectId);
 
         if (!$project) {
