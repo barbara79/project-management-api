@@ -12,7 +12,6 @@ class DeleteProjectController extends AbstractController
     #[Route('/projects/{projectId}', name: 'project_delete', methods: ['DELETE'])]
    public function deleteProject(int $projectId, ProjectRepository $projectRepository, EntityManagerInterface $em)
     {
-
         $project = $projectRepository->find($projectId);
 
         if (!$project) {

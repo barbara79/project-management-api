@@ -2,48 +2,35 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
-use App\Repository\ProjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Dto\CreateProjectDTO;
+use App\Handler\CreateProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use App\DataMapper\ProjectMapper;
 
 class CreateProjectController extends AbstractController
 {
-    #[Route(path:'/projects', name: 'project_create', methods: ['POST'])]
-    public function createProject(Request $request, ValidatorInterface $validator, EntityManagerInterface $em)
+
+    public function __construct(
+        readonly NormalizerInterface $normalizer,
+    )
     {
-        $data = json_decode($request->getContent());
+    }
 
-        if (!$data) {
-            return $this->json(['error' => 'Invalid JSON body'], 400);
-        }
+    #[Route(path:'/projects', name: 'project_create', methods: ['POST'])]
+    public function __invoke(Request $request, CreateProjectHandler $handler, SerializerInterface $serializer, ProjectMapper $projectMapper): JsonResponse
+    {
+        $projectDto = $serializer->deserialize($request->getContent(), CreateProjectDTO::class, 'json');
+        $projectMapped = $projectMapper->fromDTO($projectDto);
 
+        $project = $handler->handle($projectMapped);
 
-        $project = new Project();
-        $project->setTitle($data->title);
-        $project->setDescription($data->description ?? null);
-        $project->setDeadline(new \DateTime($data->deadline));
-        $project->setOwner($data->owner);
+        $normalized = $this->normalizer->normalize($project, null, ['datetime_format' => 'Y-m-d']);
 
-        // Data validation
-        $errors = $validator->validate($project);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                $messages[$error->getPropertyPath()] = $error->getMessage();
-            }
-
-            return $this->json(['errors' => $messages], 400);
-        }
-
-        $em->persist($project);
-        $em->flush();
-
-        return $this->json([
-            'project' => $project,
-            'message' => 'project created successfully'
-        ], 201);
+        return $this->json(['project' => $normalized], 201);
     }
 }

@@ -20,26 +20,15 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "The project title is required.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "The project title cannot exceed {{ limit }} characters."
-    )]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\Length(
-        max: 2000,
-        maxMessage: "The description cannot exceed {{ limit }} characters."
-    )]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Type(\DateTimeInterface::class, message: "Invalid date format.")]
-    private ?\DateTime $deadline = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "An owner name is required.")]
     private ?string $owner = null;
 
     /**
@@ -82,12 +71,12 @@ class Project
         return $this;
     }
 
-    public function getDeadline(): ?\DateTime
+    public function getDeadline(): ?\DateTimeInterface
     {
         return $this->deadline;
     }
 
-    public function setDeadline(?\DateTime $deadline): static
+    public function setDeadline(\DateTimeInterface $deadline): static
     {
         $this->deadline = $deadline;
 
