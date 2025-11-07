@@ -26,9 +26,7 @@ class CreateProjectController extends AbstractController
     {
         $projectDto = $serializer->deserialize($request->getContent(), CreateProjectDTO::class, 'json');
         $projectMapped = $projectMapper->fromDTO($projectDto);
-
         $project = $handler->handle($projectMapped);
-
         $normalized = $this->normalizer->normalize($project, null, ['datetime_format' => 'Y-m-d']);
 
         return $this->json(['project' => $normalized], 201);
