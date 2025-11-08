@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 
 class NotificationService
 {
-
+// It can be updated with EmailService etc
     public function __construct(
         private LoggerInterface $logger,
     )

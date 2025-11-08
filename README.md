@@ -1,83 +1,114 @@
-# 🧱 Symfony Project Management API (Clean Architecture)
+# Symfony Project Management API (Clean Architecture)
 
-This project is a **Symfony 7+ REST API** designed with **Clean Architecture** principles in mind — emphasizing **separation of concerns**, **testability**, and **scalability**.
 
-Rather than placing all logic in controllers, it introduces distinct layers such as **DTOs**, **Handlers**, **Validators**, and **Mappers**.  
-This structure mirrors how real-world enterprise Symfony applications are built.
 
----
+This project is a **Symfony REST API** designed following **Clean Architecture** principles — emphasizing **separation of concerns**, **scalability**, and **testability**.
 
-## 🎯 Goal
+Rather than mixing logic inside controllers, this application defines a clear flow:
+> **Controller → DTO → Mapper → Handler → Validator → Entity → NotificationService**
 
-The goal is to create a **maintainable**, **extensible**, and **testable** backend for project management — where each class has a single, well-defined responsibility.
+Each layer has a single, well-defined responsibility.
 
 ---
 
-## 🧠 Architectural Overview
+## Goal
 
-### Why this structure?
+To demonstrate a professional Symfony architecture where each class does one thing:
+- Controllers manage HTTP only
+- Business logic lives in Handlers
+- Validation is centralized
+- Data is clearly defined through DTOs
+- Entities remain clean and persistence-focused
 
-| Layer | Responsibility | Why it's separate |
-|--------|----------------|------------------|
-| **Controller** | Handles HTTP requests and responses | Keeps framework-specific logic isolated |
-| **DTO (Data Transfer Object)** | Represents incoming data (usually from JSON) | Prevents direct coupling between user input and your domain models |
-| **Mapper** | Converts a DTO into a Doctrine Entity | Centralizes data transformation; avoids leaking persistence logic |
-| **Handler** | Encapsulates business use cases (e.g. “create project”, “delete project”) | Makes the business layer reusable and testable outside controllers |
-| **Validator** | Validates DTOs or entities | Keeps validation logic explicit and reusable |
-| **Service** | External side effects (e.g. send notifications, emails, events) | Keeps business rules pure and side effects separated |
-| **Entity** | Domain model stored in the database | Free from request logic and framework noise |
+This mirrors modern enterprise Symfony practices used in large codebases.
 
 ---
 
-## 🏗️ Example Flow — Creating a Project
+## Architecture Overview
 
-Here’s what happens when a client sends:
+This project follows a clean, layered architecture built for clarity, testability, and maintainability.
+Each layer communicates through well-defined interfaces.
 
-```json
-{
-  "title": "Website Revamp",
-  "description": "UI/UX refresh for 2025",
-  "deadline": "2025-12-01",
-  "owner": "Alice"
-}
-```
+| Layer | Responsibility | Why It Exists |
+|--------|----------------|----------------|
+| **Controller** | Handles HTTP requests/responses | Keeps framework concerns separate |
+| **DTO (Data Transfer Object)** | Represents input data (JSON → PHP object) | Ensures strong typing and input validation |
+| **Mapper** | Converts DTO → Entity | Keeps transformation logic isolated |
+| **Validator** | Validates entities using Symfony Constraints | Enforces domain rules and throws structured exceptions |
+| **Handler** | Orchestrates the use case (e.g. create project) | Encapsulates the business workflow |
+| **Entity** | Represents the persisted domain model | Free of API or validation logic |
+| **Service (NotificationService)** | Handles side effects (emails, logs, etc.) | Keeps business rules pure and testable |
 
-1. Controller: Receives the request and delegates it.
-2. DTO: Encapsulates and validates input data. Protects your domain from malformed or malicious input.
-3. Mapper: Transforms the DTO into an Entity. Decouples API contracts from internal persistence logic.
-4. Validator: Validates domain rules on the entity. Guarantees consistency before hitting the database.
-5. Handler: Executes the business use case. Encapsulates the "Create Project" use case: reusable, testable, and isolated.
+---
 
-## ✅ Benefits of This Architecture
+### Controller
 
-- Single Responsibility: Each class does one thing well.
-- Testability: Handlers and Mappers can be tested without HTTP or Doctrine.
-- Maintainability: Add new features (like sending emails, logging, etc.) by extending handlers/services.
-- Framework Independence: Core logic doesn’t depend on Symfony. You could reuse the same business layer elsewhere.
-- Explicit Data Contracts: DTOs make it clear what the API expects — versionable and documented.
+Lightweight entry point responsible for deserializing requests, invoking the correct handler, and normalizing responses.
+No domain or persistence logic should live here.
+
+### DTO (Data Transfer Object)
+
+Encapsulates and validates input data.
+DTOs are immutable and strongly typed (readonly), ensuring that only valid, structured data enters the application.
+They protect the domain from malformed or malicious input.
+
+### Mapper
+
+Transforms data between layers (e.g. DTO → Entity).
+It acts as a bridge between the transport and domain layers, handling type conversions (like string → DateTimeImmutable).
+
+### Handler
+
+Implements the business use case — orchestrating validation, persistence, and notifications.
+Handlers contain pure business logic, isolated from Symfony or HTTP concerns, and are easy to test in isolation.
+
+### Validator
+
+Ensures entities are valid before persistence, using Symfony’s ValidatorInterface.
+It throws structured exceptions if constraints are violated — guaranteeing consistent error handling.
+
+### Service
+
+Encapsulates reusable, side-effect logic (e.g., logging, notifications, or external integrations).
+Keeps the core business flow clean and framework-independent.
+
+### Entity (Domain Model)
+
+Represents the core business object (e.g. Project).
+Contains only domain-relevant properties and relationships — free from controller or validation code.
+Entities stay pure and persistence-focused.
+
+## Benefits
+
+| Benefit | Explanation |
+|--------|----------------|
+| Separation of Concerns |	Each layer has a single purpose |
+| Testability	Handlers, Mappers, and Validators | can be unit-tested |
+| Maintainability	| New fields or logic can be added with minimal coupling |
+| Framework Independence |	Business logic doesn’t rely on Symfony internals |
+| Scalability |	Handlers and Services can grow independently |
+| Strong Typing	| DTOs and readonly objects prevent silent data corruption |
 
 
-## ⚙️ Installation
+## Installation
 
-### 1. Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/barbara79/project-management-api.git
 cd project-management-api
 ```
 
-### 2. Install dependencies
+### Install dependencies
 ``` bash
 docker compose up -d --build
 ```
 
-
-
-## 📝 Author
+## Author
 
 Barbara Palumbo
 Clean Architecture enthusiast • Symfony Developer
-📧 barbara.palumbo79@example.com
+📧 barbara.palumbo79@gmail.com
 
 🌐 linkedin.com/in/barbara-palumbo-b3356a18b
 
