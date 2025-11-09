@@ -5,7 +5,7 @@
 This project is a **Symfony REST API** designed following **Clean Architecture** principles — emphasizing **separation of concerns**, **scalability**, and **testability**.
 
 Rather than mixing logic inside controllers, this application defines a clear flow:
-> **Controller → DTO → Mapper → Handler → Validator → Entity → NotificationService**
+> **Controller → Mapper  → DTO → Validator? ->Handler →  → Repository → Entity → NotificationService**
 
 Each layer has a single, well-defined responsibility.
 
@@ -37,6 +37,7 @@ Each layer communicates through well-defined interfaces.
 | **Validator** | Validates entities using Symfony Constraints | Enforces domain rules and throws structured exceptions |
 | **Handler** | Orchestrates the use case (e.g. create project) | Encapsulates the business workflow |
 | **Entity** | Represents the persisted domain model | Free of API or validation logic |
+| **Repository** | Handles data access via Doctrine ORM | Keeps persistence logic isolated |
 | **Service (NotificationService)** | Handles side effects (emails, logs, etc.) | Keeps business rules pure and testable |
 
 ---
@@ -67,16 +68,27 @@ Handlers contain pure business logic, isolated from Symfony or HTTP concerns, an
 Ensures entities are valid before persistence, using Symfony’s ValidatorInterface.
 It throws structured exceptions if constraints are violated — guaranteeing consistent error handling.
 
-### Service
-
-Encapsulates reusable, side-effect logic (e.g., logging, notifications, or external integrations).
-Keeps the core business flow clean and framework-independent.
-
 ### Entity (Domain Model)
 
 Represents the core business object (e.g. Project).
 Contains only domain-relevant properties and relationships — free from controller or validation code.
 Entities stay pure and persistence-focused.
+
+### Repository
+
+Repositories are responsible for all data access and persistence operations (CRUD, queries, filters).
+They act as an abstraction layer between the domain and the database, keeping entities persistence-agnostic.
+The handler depends on repositories to fetch or store data — never directly interacts with Doctrine or SQL.
+
+This ensures that:
+- Entities stay pure and persistence-independent
+- Doctrine (or any ORM) can be swapped out easily
+- Business logic remains testable and decoupled from the database
+
+### Service
+
+Encapsulates reusable, side-effect logic (e.g., logging, notifications, or external integrations).
+Keeps the core business flow clean and framework-independent.
 
 ## Benefits
 

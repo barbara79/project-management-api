@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Dto\CreateProjectDTO;
+use App\Dto\ProjectDTOInterface;
 use App\Handler\CreateProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use App\DataMapper\ProjectMapper;
+use App\Exception\ExceptionInterface;
 
 class CreateProjectController extends AbstractController
 {
@@ -22,13 +23,19 @@ class CreateProjectController extends AbstractController
     }
 
     #[Route(path:'/projects', name: 'project_create', methods: ['POST'])]
-    public function __invoke(Request $request, CreateProjectHandler $handler, SerializerInterface $serializer, ProjectMapper $projectMapper): JsonResponse
+    public function index(Request $request, CreateProjectHandler $handler, ProjectMapper $projectMapper): JsonResponse
     {
-        $projectDto = $serializer->deserialize($request->getContent(), CreateProjectDTO::class, 'json');
-        $projectMapped = $projectMapper->fromDTO($projectDto);
-        $project = $handler->handle($projectMapped);
-        $normalized = $this->normalizer->normalize($project, null, ['datetime_format' => 'Y-m-d']);
+        try {
+            //TODO check type of return of content
+            $projectDTO = $projectMapper->mapRequestToDTO($request->getContent(), CreateProjectDTO::class);
+            $handler->handle($projectDTO);
 
-        return $this->json(['project' => $normalized], 201);
+            return $this->json(['success' => 'Project created successfully'], 201);
+        } catch (ExceptionInterface $exception) {
+            //TODO std status code
+            return $this->json(['error' => $exception->getMessage()], 400);
+        } catch (\Throwable) {
+            return $this->json(['error' => 'Server Error'], 500);
+        }
     }
 }

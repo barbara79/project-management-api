@@ -4,10 +4,11 @@ namespace App\Service;
 
 use App\Entity\Project;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class NotificationService
 {
-// It can be updated with EmailService etc
+// It can be replaced with EmailService etc
     public function __construct(
         private LoggerInterface $logger,
     )
@@ -19,10 +20,19 @@ class NotificationService
         $owner = $project->getOwner();
         $title = $project->getTitle();
 
-        $this->logger->info(sprintf(
-            'Notification: Project "%s" has been matched with owner "%s".',
-            $title,
-            $owner
-        ));
+        try {
+            $this->logger->info(sprintf(
+                'Notification: Project "%s" has been matched with owner "%s".',
+                $title,
+                $owner
+            ));
+        } catch (Throwable ) {
+            $this->logger->error(sprintf(
+                'Notification: Project "%s" has an invalid owner "%s".',
+                $title,
+                $owner
+            ));
+        }
+
     }
 }
