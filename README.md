@@ -1,106 +1,70 @@
-# Symfony Project Management API (Clean Architecture)
+# Symfony Project Management API (Clean Architecture / DDD-Inspired)
 
+This Symfony REST API follows Clean Architecture principles with Domain-Driven Design (DDD) inspirations.
+It emphasizes separation of concerns, testability, and scalability.
 
+Rather than mixing logic inside controllers, the system is organized into explicit layers:
 
-This project is a **Symfony REST API** designed following **Clean Architecture** principles — emphasizing **separation of concerns**, **scalability**, and **testability**.
-
-Rather than mixing logic inside controllers, this application defines a clear flow:
-> **Controller → Mapper  → DTO → Validator? ->Handler →  → Repository → Entity → NotificationService**
-
-Each layer has a single, well-defined responsibility.
+Controller → DTO → Mapper → Handler → Entity → Repository → Service
 
 ---
 
 ## Goal
 
-To demonstrate a professional Symfony architecture where each class does one thing:
-- Controllers manage HTTP only
-- Business logic lives in Handlers
-- Validation is centralized
-- Data is clearly defined through DTOs
-- Entities remain clean and persistence-focused
+This project demonstrates a professional Symfony architecture where each layer contributes to a clear and maintainable flow from HTTP request to database persistence.
 
-This mirrors modern enterprise Symfony practices used in large codebases.
+Objectives include:
+
+- Controllers: Handle HTTP input and delegate responsibilities to Handlers, keeping domain logic out.
+- Handlers: Encapsulate business logic in dedicated classes, isolated from framework concerns.
+- DTOs (Data Transfer Objects): Immutable, validated input objects that ensure strong typing and safe API boundaries before reaching the domain. 
+- Mappers: Safely transform data between layers (DTO ↔ Entity ↔ Response), isolating conversion logic from business workflows. 
+- Entities: Remain clean, persistence-focused, and free from framework or validation concerns. 
+- Services: Handle external integrations, like logging or notifications, keeping side effects isolated from domain logic. 
+- Repositories: Abstract database operations, decoupling domain logic from persistence.
 
 ---
 
 ## Architecture Overview
 
-This project follows a clean, layered architecture built for clarity, testability, and maintainability.
-Each layer communicates through well-defined interfaces.
-
 | Layer | Responsibility | Why It Exists |
 |--------|----------------|----------------|
-| **Controller** | Handles HTTP requests/responses | Keeps framework concerns separate |
-| **DTO (Data Transfer Object)** | Represents input data (JSON → PHP object) | Ensures strong typing and input validation |
-| **Mapper** | Converts DTO → Entity | Keeps transformation logic isolated |
-| **Validator** | Validates entities using Symfony Constraints | Enforces domain rules and throws structured exceptions |
-| **Handler** | Orchestrates the use case (e.g. create project) | Encapsulates the business workflow |
-| **Entity** | Represents the persisted domain model | Free of API or validation logic |
-| **Repository** | Handles data access via Doctrine ORM | Keeps persistence logic isolated |
-| **Service (NotificationService)** | Handles side effects (emails, logs, etc.) | Keeps business rules pure and testable |
+| **Controller** | Handles HTTP requests and delegates to Handlers | Isolates framework-specific logic from domain logic |
+| **DTO** | Represents and validates input data | Provides immutability, strong typing, and safe API boundaries |
+| **Mapper** | Transforms data between layers | Centralizes conversion logic and prevents silent data inconsistencies |
+| **Handler** | Executes a specific business use case | Orchestrates validation, persistence, and side effects |
+| **Repository** | Manages entity persistence via Doctrine | Abstracts database operations, keeping entities persistence-agnostic |
+| **Entity** | Core domain model representation | Free from validation or infrastructure logic |
+| **Service** | Handles side effects (logging, notifications, integrations) | Keeps domain logic predictable and testable |
+| **Exception Layer** | Custom domain-specific exceptions | Provides consistent error handling across layers |
 
 ---
 
-### Controller
+## Flow Explanation
 
-Lightweight entry point responsible for deserializing requests, invoking the correct handler, and normalizing responses.
-No domain or persistence logic should live here.
+- **Controller:** Receives HTTP input, delegates to Handlers, parses requests, formats JSON responses. No domain logic.  
+- **DTO:** Immutable, validated input objects that ensure strong typing before reaching the domain.  Immutable, validated objects ensure strong typing and safe API boundaries.
+- **Mapper:** Safely converts between representations (Request → DTO → Entity → Response). Raises domain exceptions on failure.  
+- **Handler:** Contains main business logic, coordinates mapping, persistence, and service calls, and maintains transaction boundaries.  
+- **Entity:** Represents the domain model, containing only relevant data and relationships.  
+- **Repository:** Encapsulates database access, providing persistence abstraction.  
+- **Service:** Services handle external integrations like email or logging, highlighting that side effects are isolated from domain logic.
+- **Exception Handling:** Standardized, domain-specific exceptions ensure predictable error management.
 
-### DTO (Data Transfer Object)
-
-Encapsulates and validates input data.
-DTOs are immutable and strongly typed (readonly), ensuring that only valid, structured data enters the application.
-They protect the domain from malformed or malicious input.
-
-### Mapper
-
-Transforms data between layers (e.g. DTO → Entity).
-It acts as a bridge between the transport and domain layers, handling type conversions (like string → DateTimeImmutable).
-
-### Handler
-
-Implements the business use case — orchestrating validation, persistence, and notifications.
-Handlers contain pure business logic, isolated from Symfony or HTTP concerns, and are easy to test in isolation.
-
-### Validator
-
-Ensures entities are valid before persistence, using Symfony’s ValidatorInterface.
-It throws structured exceptions if constraints are violated — guaranteeing consistent error handling.
-
-### Entity (Domain Model)
-
-Represents the core business object (e.g. Project).
-Contains only domain-relevant properties and relationships — free from controller or validation code.
-Entities stay pure and persistence-focused.
-
-### Repository
-
-Repositories are responsible for all data access and persistence operations (CRUD, queries, filters).
-They act as an abstraction layer between the domain and the database, keeping entities persistence-agnostic.
-The handler depends on repositories to fetch or store data — never directly interacts with Doctrine or SQL.
-
-This ensures that:
-- Entities stay pure and persistence-independent
-- Doctrine (or any ORM) can be swapped out easily
-- Business logic remains testable and decoupled from the database
-
-### Service
-
-Encapsulates reusable, side-effect logic (e.g., logging, notifications, or external integrations).
-Keeps the core business flow clean and framework-independent.
+---
 
 ## Benefits
 
 | Benefit | Explanation |
 |--------|----------------|
-| Separation of Concerns |	Each layer has a single purpose |
-| Testability	Handlers, Mappers, and Validators | can be unit-tested |
-| Maintainability	| New fields or logic can be added with minimal coupling |
-| Framework Independence |	Business logic doesn’t rely on Symfony internals |
-| Scalability |	Handlers and Services can grow independently |
-| Strong Typing	| DTOs and readonly objects prevent silent data corruption |
+| **Separation of Concerns** | Each layer has a focused responsibility |
+| **Testability** | Handlers, Mappers, and DTOs can be tested in isolation |
+| **Maintainability** | Adding features or fields requires minimal coupling |
+| **Framework Independence** | Business logic does not depend on Symfony internals |
+| **Scalability** | Handlers and Services can grow independently |
+| **Type Safety** | DTOs and readonly objects prevent silent data issues |
 
+---
 
 ## Installation
 
@@ -119,7 +83,7 @@ docker compose up -d --build
 ## Author
 
 Barbara Palumbo
-Clean Architecture enthusiast • Symfony Developer
+Clean Architecture enthusiast • Software Developer
 📧 barbara.palumbo79@gmail.com
 
 🌐 linkedin.com/in/barbara-palumbo-b3356a18b
