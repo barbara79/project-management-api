@@ -4,9 +4,10 @@ namespace App\Handler;
 
 
 use App\Dto\ProjectDTOInterface;
-use App\Entity\Project;
+use App\Dto\ProjectDTOResponse;
+
 
 interface ProjectHandlerInterface
 {
-    public function handle(?ProjectDTOInterface $projectDTO): void;
+    public function handle(?ProjectDTOInterface $projectDTO): ?ProjectDTOResponse;
 }

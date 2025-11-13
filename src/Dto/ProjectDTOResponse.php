@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Dto;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+class ProjectDTOResponse implements ProjectDTOInterface
+{
+    public function __construct(
+        #[Assert\NotNull]
+        public int $projectId,
+        #[Assert\NotBlank]
+        public string $title,
+        #[Assert\NotBlank]
+        public string $deadline,
+        public string $owner
+    ) {}
+}

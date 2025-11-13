@@ -2,6 +2,11 @@
 
 namespace App\Controller;
 
+use App\DataMapper\ProjectMapper;
+use App\Dto\GetProjectDTO;
+use App\Exception\ExceptionInterface;
+use App\Exception\NotFoundProjectException;
+use App\Handler\GetProjectByIdHandler;
 use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,20 +20,24 @@ class GetProjectByIdController extends AbstractController
         requirements: ['projectId' => '\d+'],
         methods: ['GET'],
     )]
-    public function getProjectById(int $projectId, ProjectRepository $projectRepository)
+    public function index(int $projectId, GetProjectByIdHandler $getProjectByIdHandler)
     {
-        $project = $projectRepository->find($projectId);
+        try {
+            $getProjectDTO = GetProjectDTO::from($projectId);
+            $responseDTO = $getProjectByIdHandler->handle($getProjectDTO);
 
-        if (!$project) {
-            return $this->json(['error' => 'not found'], 404);
+            return $this->json($responseDTO, 200);
+        } catch (ExceptionInterface $exception) {
+            return $this->json(
+                ['error' => $exception->getMessage()],
+                $exception->getCode()
+            );
+        } catch (\Throwable) {
+            return $this->json(
+                ['error' => 'Internal Server Error'],
+                JsonResponse::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
-        return $this->json([
-            'id' => $project->getId(),
-            'title' => $project->getTitle(),
-            'description' => $project->getDescription(),
-            'deadline' => $project->getDeadline()?->format('Y-m-d'),
-            'owner' => $project->getOwner(),
-        ]);
     }
 }

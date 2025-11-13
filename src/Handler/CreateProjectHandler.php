@@ -19,7 +19,7 @@ class CreateProjectHandler implements ProjectHandlerInterface
     ) {}
 
 
-    public function handle(?ProjectDTOInterface $projectDTO): void
+    public function handle(?ProjectDTOInterface $projectDTO): null
     {
         $project = $this->projectMapper->mapDTOToEntity($projectDTO);
 
@@ -33,5 +33,6 @@ class CreateProjectHandler implements ProjectHandlerInterface
         $this->notificationService->notify($project);
 
         //TODO how to return project with ID
+        return null;
     }
 }

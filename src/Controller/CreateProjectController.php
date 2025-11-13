@@ -30,12 +30,18 @@ class CreateProjectController extends AbstractController
             $projectDTO = $projectMapper->mapRequestToDTO($request->getContent(), CreateProjectDTO::class);
             $handler->handle($projectDTO);
 
-            return $this->json(['success' => 'Project created successfully'], 201);
+            return $this->json(['success' => 'Project created successfully'], JsonResponse::HTTP_CREATED);
         } catch (ExceptionInterface $exception) {
-            //TODO std status code
-            return $this->json(['error' => $exception->getMessage()], 400);
+
+            return $this->json(
+                ['error' => $exception->getMessage()],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
         } catch (\Throwable) {
-            return $this->json(['error' => 'Server Error'], 500);
+            return $this->json(
+                ['error' => 'Internal Server Error'],
+                JsonResponse::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 }
