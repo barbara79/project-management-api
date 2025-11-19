@@ -6,4 +6,5 @@
 /var/
 /vendor/
 composer.lock
+.idea
 ###< symfony/framework-bundle ###
