@@ -20,7 +20,11 @@ class CreateProjectController extends AbstractController
     )
     {}
 
-    #[Route(path:'/projects', name: 'project_create', methods: ['POST'])]
+    #[Route(
+        path:'/projects',
+        name: 'project_create',
+        methods: ['POST']
+    )]
     public function index(Request $request, CreateProjectHandler $handler, ProjectMapper $projectMapper): JsonResponse
     {
         try {

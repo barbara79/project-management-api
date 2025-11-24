@@ -18,7 +18,6 @@ class GetProjectByIdHandler implements ProjectHandlerInterface
 
     public function handle(?ProjectDTOInterface $projectDTO):  ProjectDTOResponse
     {
-
         $project = $this->projectRepository->find($projectDTO->projectId);
 
         if ($project === null) {
