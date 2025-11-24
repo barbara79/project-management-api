@@ -14,8 +14,7 @@ class GetProjectByIdHandler implements ProjectHandlerInterface
 
     public function __construct(
         readonly ProjectRepository $projectRepository)
-    {
-    }
+    {}
 
     public function handle(?ProjectDTOInterface $projectDTO):  ProjectDTOResponse
     {
@@ -23,7 +22,6 @@ class GetProjectByIdHandler implements ProjectHandlerInterface
         $project = $this->projectRepository->find($projectDTO->projectId);
 
         if ($project === null) {
-
             throw new NotFoundProjectException();
         }
 
