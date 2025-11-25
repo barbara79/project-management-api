@@ -2,29 +2,42 @@
 
 namespace App\Controller;
 
-use App\Repository\ProjectRepository;
+use App\Dto\GetProjectDTO;
+use App\Exception\ExceptionInterface;
+use App\Handler\DeleteProjectByIdHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 class DeleteProjectController extends AbstractController
 {
-    #[Route('/projects/{projectId}', name: 'project_delete', methods: ['DELETE'])]
-   public function deleteProject(int $projectId, ProjectRepository $projectRepository, EntityManagerInterface $em)
+    #[Route(
+        '/projects/{projectId}',
+        name: 'project_delete',
+        requirements: ['projectId' => '\d+'],
+        methods: ['DELETE']
+    )]
+    public function index(int $projectId, DeleteProjectByIdHandler $deleteProjectByIdHandler, EntityManagerInterface $em)
     {
-        $project = $projectRepository->find($projectId);
-
-        if (!$project) {
-            return $this->json(['error' => 'project not found'], 404);
-        }
 
         try {
-            $em->remove($project);
-            $em->flush();
-        } catch (\Exception $e) {
-            return $this->json(['error' => $e->getMessage()], 500);
+            $projectDTO = GetProjectDTO::from($projectId);
+            $deleteProjectByIdHandler->handle($projectDTO);
+
+            return $this->json(['success' => 'project deleted'], JsonResponse::HTTP_OK);
+        } catch (ExceptionInterface $exception) {
+            return $this->json(
+                ['error' => $exception->getMessage()],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
+        } catch (\Throwable $throwable) {
+            return $this->json(
+                ['error' => 'Internal Server Error'],
+                JsonResponse::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
 
-        return $this->json(['success' => 'project deleted'], 200);
+
     }
 }

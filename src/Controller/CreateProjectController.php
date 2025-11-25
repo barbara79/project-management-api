@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Dto\CreateProjectDTO;
-use App\Dto\ProjectDTOInterface;
 use App\Handler\CreateProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,10 +18,13 @@ class CreateProjectController extends AbstractController
     public function __construct(
         readonly NormalizerInterface $normalizer,
     )
-    {
-    }
+    {}
 
-    #[Route(path:'/projects', name: 'project_create', methods: ['POST'])]
+    #[Route(
+        path:'/projects',
+        name: 'project_create',
+        methods: ['POST']
+    )]
     public function index(Request $request, CreateProjectHandler $handler, ProjectMapper $projectMapper): JsonResponse
     {
         try {

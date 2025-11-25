@@ -84,7 +84,6 @@ docker compose up -d --build
 
 Barbara Palumbo
 Clean Architecture enthusiast • Software Developer
-📧 barbara.palumbo79@gmail.com
 
 🌐 linkedin.com/in/barbara-palumbo-b3356a18b
 

@@ -4,7 +4,7 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProjectDTOResponse implements ProjectDTOInterface
+class ProjectDTOResponse
 {
     public function __construct(
         #[Assert\NotNull]

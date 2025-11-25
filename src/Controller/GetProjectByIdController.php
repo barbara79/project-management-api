@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\DataMapper\ProjectMapper;
 use App\Dto\GetProjectDTO;
 use App\Exception\ExceptionInterface;
-use App\Exception\NotFoundProjectException;
 use App\Handler\GetProjectByIdHandler;
-use App\Repository\ProjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,6 +35,5 @@ class GetProjectByIdController extends AbstractController
                 JsonResponse::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
     }
 }
