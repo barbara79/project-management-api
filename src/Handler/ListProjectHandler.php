@@ -2,11 +2,8 @@
 
 namespace App\Handler;
 
-use App\Dto\ListProjectDTO;
-use App\Dto\ProjectDTOInterface;
+
 use App\Dto\ProjectDTOResponse;
-use App\Exception\NotFoundProjectException;
-use App\Handler\ProjectHandlerInterface;
 use App\Repository\ProjectRepository;
 
 class ListProjectHandler
