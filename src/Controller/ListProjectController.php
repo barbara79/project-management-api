@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Exception\ExceptionInterface;
-use App\Dto\ListProjectDTO;
 use App\Handler\ListProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

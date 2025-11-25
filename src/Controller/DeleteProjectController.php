@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Dto\GetProjectDTO;
 use App\Exception\ExceptionInterface;
 use App\Handler\DeleteProjectByIdHandler;
-use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

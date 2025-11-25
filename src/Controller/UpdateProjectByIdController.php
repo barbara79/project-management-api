@@ -3,13 +3,10 @@
 namespace App\Controller;
 
 use App\DataMapper\ProjectMapper;
-use App\Dto\CreateProjectDTO;
 use App\Dto\GetProjectDTO;
 use App\Dto\UpdateProjectDTO;
 use App\Exception\ExceptionInterface;
 use App\Handler\UpdateProjectHandler;
-use App\Repository\ProjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
