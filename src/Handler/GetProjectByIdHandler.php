@@ -9,7 +9,7 @@ use App\Entity\Project;
 use App\Exception\NotFoundProjectException;
 use App\Repository\ProjectRepository;
 
-class GetProjectByIdHandler implements ProjectHandlerInterface
+class GetProjectByIdHandler
 {
 
     public function __construct(

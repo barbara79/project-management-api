@@ -7,10 +7,9 @@ use App\Dto\ProjectDTOInterface;
 use App\Exception\PersistException;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Validator\CreateProjectValidator;
 
 
-class CreateProjectHandler implements ProjectHandlerInterface
+class CreateProjectHandler
 {
     public function __construct(
         private EntityManagerInterface $em,

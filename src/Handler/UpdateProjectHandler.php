@@ -2,8 +2,9 @@
 
 namespace App\Handler;
 
-use App\Dto\ProjectDTOInterface;
+use App\Dto\GetProjectDTO;
 use App\Dto\ProjectDTOResponse;
+use App\Dto\UpdateProjectDTO;
 use App\Exception\PersistException;
 use App\Repository\ProjectRepository;
 use App\Exception\NotFoundProjectException;
@@ -12,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UpdateProjectHandler
 {
-
     public function __construct(
         private ProjectRepository $projectRepository,
         private EntityManagerInterface $em,
@@ -20,7 +20,7 @@ class UpdateProjectHandler
     )
     {}
 
-    public function handle(?ProjectDTOInterface $projectDTO, ProjectDTOInterface $updatedDTO): ?ProjectDTOResponse
+    public function handle(GetProjectDTO $projectDTO, UpdateProjectDTO $updateProjectDTO): ?ProjectDTOResponse
     {
         $project = $this->projectRepository->find($projectDTO->projectId);
 
@@ -28,30 +28,30 @@ class UpdateProjectHandler
             throw new NotFoundProjectException();
         }
 
-        if (isset($updatedDTO->title)) {
-            $project->setTitle($updatedDTO->title);
+        if (isset($updateProjectDTO->title)) {
+            $project->setTitle($updateProjectDTO->title);
         }
 
-        if (isset($updatedDTO->description)) {
-            $project->setDescription($updatedDTO->description);
+        if (isset($updateProjectDTO->description)) {
+            $project->setDescription($updateProjectDTO->description);
         }
 
-        if (isset($updatedDTO->deadline)) {
-            $project->setDeadline(new \DateTimeImmutable( $updatedDTO->deadline));
+        if (isset($updateProjectDTO->deadline)) {
+            $project->setDeadline(new \DateTimeImmutable($updateProjectDTO->deadline));
         }
 
-        if (isset($updatedDTO->owner)) {
-            $project->setOwner($updatedDTO->owner);
+        if (isset($updateProjectDTO->owner)) {
+            $project->setOwner($updateProjectDTO->owner);
         }
 
         try {
             $this->em->persist($project);
             $this->em->flush();
-        } catch (\Throwable $e) {
+        } catch (\Throwable ) {
             throw new PersistException();
         }
 
-        if (isset($updatedDTO->owner)) {
+        if (isset($updateProjectDTO->owner)) {
             $this->notificationService->notify($project);
         }
 
