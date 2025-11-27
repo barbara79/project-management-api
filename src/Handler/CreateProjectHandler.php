@@ -4,6 +4,7 @@ namespace App\Handler;
 
 use App\DataMapper\ProjectMapper;
 use App\Dto\ProjectDTOInterface;
+use App\Dto\ProjectDTOResponse;
 use App\Exception\PersistException;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,7 @@ class CreateProjectHandler
     ) {}
 
 
-    public function handle(?ProjectDTOInterface $projectDTO): null
+    public function handle(?ProjectDTOInterface $projectDTO): ProjectDTOResponse
     {
         $project = $this->projectMapper->mapDTOToEntity($projectDTO);
 
@@ -31,7 +32,11 @@ class CreateProjectHandler
 
         $this->notificationService->notify($project);
 
-        //TODO how to return project with ID
-        return null;
+        return new ProjectDTOResponse(
+            projectId: $project->getId(),
+            title: $project->getTitle(),
+            deadline: $project->getDeadline()?->format('Y-m-d') ?? '',
+            owner: is_object($project->getOwner()) ? (string) $project->getOwner() : $project->getOwner()
+        );
     }
 }

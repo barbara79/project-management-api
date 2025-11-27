@@ -11,7 +11,6 @@ use App\Repository\ProjectRepository;
 
 class GetProjectByIdHandler
 {
-
     public function __construct(
         readonly ProjectRepository $projectRepository)
     {}
