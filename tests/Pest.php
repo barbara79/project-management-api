@@ -1,5 +1,6 @@
 <?php
 
+use App\Entity\Project;
 use PHPUnit\Framework\TestCase;
 
 /*
@@ -41,7 +42,23 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function makeProject(
+    $projectId = 1,
+    $title = "Project title",
+    $description = "Project description",
+    $deadline = new DateTime('2025-12-20'),
+    $owner = 'John Doe'
+) : Project
 {
-    // ..
+    $project = new Project();
+    $project->setTitle($title);
+    $project->setDescription($description);
+    $project->setDeadline($deadline);
+    $project->setOwner($owner);
+
+    $reflector = new \ReflectionClass($project);
+    $reflectorProperty = $reflector->getProperty('id');
+    $reflectorProperty->setValue($project, $projectId);
+
+    return $project;
 }

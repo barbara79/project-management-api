@@ -20,7 +20,6 @@ class DeleteProjectController extends AbstractController
     )]
     public function index(int $projectId, DeleteProjectByIdHandler $deleteProjectByIdHandler, EntityManagerInterface $em)
     {
-
         try {
             $projectDTO = GetProjectDTO::from($projectId);
             $deleteProjectByIdHandler->handle($projectDTO);
@@ -31,13 +30,11 @@ class DeleteProjectController extends AbstractController
                 ['error' => $exception->getMessage()],
                 JsonResponse::HTTP_BAD_REQUEST
             );
-        } catch (\Throwable $throwable) {
+        } catch (\Throwable ) {
             return $this->json(
                 ['error' => 'Internal Server Error'],
                 JsonResponse::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
-
     }
 }

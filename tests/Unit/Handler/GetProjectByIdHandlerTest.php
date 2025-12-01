@@ -14,27 +14,18 @@ afterEach(function () {
     Mockery::close();
 });
 
-
 describe('testing getProjectById handler', function () {
     it('find project by id successfully', function () {
         $projectId = 24;
+        $deadline = new \DateTime('2025-12-01');
 
-        $project = new Project();
-        $project->setTitle('Project title');
-        $project->setDescription('Project description');
-        $project->setDeadline(new \DateTime('2025-12-01'));
-        $project->setOwner('John Doe');
-
-        $reflector = new \ReflectionClass($project);
-        $reflectorProperty = $reflector->getProperty('id');
-        $reflectorProperty->setValue($project, $projectId);
+        $project = makeProject(projectId: $projectId, deadline: $deadline);
 
         $repo = Mockery::mock(ProjectRepository::class);
         $repo->shouldReceive('find')
             ->with($projectId)
             ->andReturn($project)
             ->once();
-
 
         $handler = new GetProjectByIdHandler($repo);
         $result = $handler->handle(GetProjectDTO::from($projectId));

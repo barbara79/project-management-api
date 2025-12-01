@@ -4,7 +4,6 @@ namespace App\Tests\Unit\Handler;
 
 use App\Dto\GetProjectDTO;
 use App\Dto\UpdateProjectDTO;
-use App\Entity\Project;
 use App\Exception\NotFoundProjectException;
 use App\Exception\PersistException;
 use App\Handler\UpdateProjectHandler;
@@ -22,15 +21,7 @@ describe('testing update project by id handler', function () {
    it('updates project by id with new title successfully', function () {
        $projectId = 24;
 
-       $project = new Project();
-       $project->setTitle('Project title');
-       $project->setDescription('Project description');
-       $project->setDeadline(new \DateTime('2025-12-01'));
-       $project->setOwner('John Doe');
-
-       $reflector = new \ReflectionClass($project);
-       $reflectorProperty = $reflector->getProperty('id');
-       $reflectorProperty->setValue($project, $projectId);
+       $project = makeProject(projectId: $projectId);
 
        $repo = Mockery::mock(ProjectRepository::class);
        $repo->shouldReceive('find')
@@ -79,16 +70,7 @@ describe('testing update project by id handler', function () {
    it('throws PersistException if it fails during the flush', function () {
        $projectId = 24;
 
-       $project = new Project();
-       $project->setTitle('Project title');
-       $project->setDescription('Project description');
-       $project->setDeadline(new \DateTime('2025-12-01'));
-       $project->setOwner('John Doe');
-
-       $reflector = new \ReflectionClass($project);
-       $reflectorProperty = $reflector->getProperty('id');
-       $reflectorProperty->setValue($project, $projectId);
-
+       $project = makeProject(projectId: $projectId);
        $repo = Mockery::mock(ProjectRepository::class);
        $repo->shouldReceive('find')
            ->with($projectId)

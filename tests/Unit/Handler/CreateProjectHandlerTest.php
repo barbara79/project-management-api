@@ -20,21 +20,12 @@ describe('testing createProject handler', function () {
     it('creates project successfully', function () {
         $title = 'Project title';
         $description = 'Project description';
-        $deadline = new \DateTime('2025-12-01');
         $owner = 'John Doe';
+        $deadlineString = '2025-12-20';
 
-        $dto = new CreateProjectDTO($title, $description, '2025-12-01', $owner);
-
-        $projectId = 24;
-        $project = new Project();
-        $project->setTitle($title);
-        $project->setDescription($description);
-        $project->setDeadline($deadline);
-        $project->setOwner($owner);
-
-        $reflector = new \ReflectionClass($project);
-        $reflectorProperty = $reflector->getProperty('id');
-        $reflectorProperty->setValue($project, $projectId);
+        $dto = new CreateProjectDTO($title, $description, $deadlineString, $owner);
+        $projectId = 1;
+        $project = makeProject();
 
         $mapper = Mockery::mock(ProjectMapper::class);
         $mapper->shouldReceive('mapDTOToEntity')
@@ -58,29 +49,19 @@ describe('testing createProject handler', function () {
         expect($result->projectId)->toEqual($projectId)
             ->and($result->title)->toEqual($title)
             ->and($result->description)->toEqual($description)
-            ->and($result->deadline)->toEqual('2025-12-01')
+            ->and($result->deadline)->toEqual($deadlineString)
             ->and($result->owner)->toEqual($owner);
     });
 
     it('throw PersistException when it tries to flush', function () {
         $title = 'Project title';
         $description = 'Project description';
-        $deadline = new \DateTime('2025-12-01');
+        $deadlineString = '2025-12-20';
         $owner = 'John Doe';
 
-        $dto = new CreateProjectDTO($title, $description, '2025-12-01', $owner);
-
-        $projectId = 24;
-
-        $project = new Project();
-        $project->setTitle($title);
-        $project->setDescription($description);
-        $project->setDeadline($deadline);
-        $project->setOwner($owner);
-
-        $reflector = new \ReflectionClass($project);
-        $reflectorProperty = $reflector->getProperty('id');
-        $reflectorProperty->setValue($project, $projectId);
+        $dto = new CreateProjectDTO($title, $description, $deadlineString, $owner);
+        $projectId = 1;
+        $project = makeProject();
 
         $mapper = Mockery::mock(ProjectMapper::class);
         $mapper->shouldReceive('mapDTOToEntity')

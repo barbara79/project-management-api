@@ -3,7 +3,6 @@
 namespace App\Tests\Unit\Handler;
 
 use App\Dto\ProjectDTOResponse;
-use App\Entity\Project;
 use App\Exception\NotFoundProjectException;
 use App\Handler\ListProjectHandler;
 use App\Repository\ProjectRepository;
@@ -16,26 +15,18 @@ afterEach(function () {
 describe('testing list projects handler', function () {
     it('lists all projects', function () {
         $projectId1 = 1;
-        $project1 = new Project();
-        $project1->setTitle('Project A');
-        $project1->setDescription('Description A');
-        $project1->setDeadline(new \DateTime('2025-01-01'));
-        $project1->setOwner('Alice');
-
-        $reflector = new \ReflectionClass($project1);
-        $reflectorProperty = $reflector->getProperty('id');
-        $reflectorProperty->setValue($project1, $projectId1);
+        $title1 = 'Project A';
+        $description1 = 'Description A';
+        $deadline1 = new \DateTime('2025-12-20');
+        $owner1 = 'Alice';
+        $project1 = makeProject(title: $title1, description: $description1, deadline: $deadline1, owner: $owner1);
 
         $projectId2 = 2;
-        $project2 = new Project();
-        $project2->setTitle('Project B');
-        $project2->setDescription('Description B');
-        $project2->setDeadline(new \DateTime('2025-02-01'));
-        $project2->setOwner('Bob');
-
-        $reflector = new \ReflectionClass($project2);
-        $reflectorProperty = $reflector->getProperty('id');
-        $reflectorProperty->setValue($project2, $projectId2);
+        $title2 = 'Project B';
+        $description2 = 'Description B';
+        $deadline2 = new \DateTime('2025-12-12');
+        $owner2 = 'Bob';
+        $project2 = makeProject(projectId: $projectId2, title: $title2, description: $description2, deadline: $deadline2, owner: $owner2);
 
         $repo = Mockery::mock(ProjectRepository::class);
         $repo->shouldReceive('findAll')
@@ -47,8 +38,8 @@ describe('testing list projects handler', function () {
 
         expect($result)->toHaveCount(2);
         expect($result[0])->toBeInstanceOf(ProjectDTOResponse::class);
-        expect($result[0]->title)->toEqual('Project A');
-        expect($result[1]->title)->toEqual('Project B');
+        expect($result[0]->title)->toEqual($title1);
+        expect($result[1]->title)->toEqual($title2);
     });
 
     it('throws exception if no projects have been found', function () {
