@@ -9,12 +9,15 @@ use App\Exception\PersistException;
 use App\Handler\CreateProjectHandler;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\TestCase;
+use Mockery;
 
-class CreateProjectHandlerTest extends TestCase
-{
-    public function testCreateProjectHappyCase()
-    {
+afterEach(function () {
+    Mockery::close();
+});
+
+
+describe('testing createProject handler', function () {
+    it('creates project successfully', function () {
         $title = 'Project title';
         $description = 'Project description';
         $deadline = new \DateTime('2025-12-01');
@@ -23,7 +26,6 @@ class CreateProjectHandlerTest extends TestCase
         $dto = new CreateProjectDTO($title, $description, '2025-12-01', $owner);
 
         $projectId = 24;
-
         $project = new Project();
         $project->setTitle($title);
         $project->setDescription($description);
@@ -34,34 +36,33 @@ class CreateProjectHandlerTest extends TestCase
         $reflectorProperty = $reflector->getProperty('id');
         $reflectorProperty->setValue($project, $projectId);
 
-        $mapper = $this->createMock(ProjectMapper::class);
-        $mapper->expects($this->once())
-            ->method('mapDTOToEntity')
+        $mapper = Mockery::mock(ProjectMapper::class);
+        $mapper->shouldReceive('mapDTOToEntity')
             ->with($dto)
-            ->willReturn($project);
+            ->andReturn($project)
+            ->once();
+        $em = Mockery::mock(EntityManagerInterface::class);
+        $em->shouldReceive('persist')
+            ->with($project)
+            ->once();
+        $em->shouldReceive('flush');
 
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects($this->once())
-            ->method('persist')
-            ->with($project);
-        $em->method('flush');
-        $notificationService = $this->createMock(NotificationService::class);
-        $notificationService->expects($this->once())
-            ->method('notify')
-            ->with($project);
+        $notificationService = Mockery::mock(NotificationService::class);
+        $notificationService->shouldReceive('notify')
+            ->with($project)
+            ->once();
 
         $handler = new CreateProjectHandler($em, $notificationService, $mapper);
         $result = $handler->handle($dto);
 
-        $this->assertSame($projectId, $result->projectId);
-        $this->assertSame($title, $result->title);
-        $this->assertSame($owner, $result->owner);
-        $this->assertSame('2025-12-01', $result->deadline);
-    }
+        expect($result->projectId)->toEqual($projectId)
+            ->and($result->title)->toEqual($title)
+            ->and($result->description)->toEqual($description)
+            ->and($result->deadline)->toEqual('2025-12-01')
+            ->and($result->owner)->toEqual($owner);
+    });
 
-    public function testPersistException()
-    {
-        $this->expectException(PersistException::class);
+    it('throw PersistException when it tries to flush', function () {
         $title = 'Project title';
         $description = 'Project description';
         $deadline = new \DateTime('2025-12-01');
@@ -81,22 +82,23 @@ class CreateProjectHandlerTest extends TestCase
         $reflectorProperty = $reflector->getProperty('id');
         $reflectorProperty->setValue($project, $projectId);
 
-        $mapper = $this->createMock(ProjectMapper::class);
-        $mapper->expects($this->once())
-            ->method('mapDTOToEntity')
+        $mapper = Mockery::mock(ProjectMapper::class);
+        $mapper->shouldReceive('mapDTOToEntity')
             ->with($dto)
-            ->willReturn($project);
+            ->andReturn($project)
+            ->once();
+        $em = Mockery::mock(EntityManagerInterface::class);
+        $em->shouldReceive('persist')
+            ->with($project)
+            ->once();
+        $em->shouldReceive('flush')
+            ->once()
+            ->andThrow(new PersistException());
 
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects($this->once())
-            ->method('persist')
-            ->with($project);
-        $em->method('flush')
-            ->willThrowException(new PersistException());
-
-        $notificationService = $this->createMock(NotificationService::class);
+        $notificationService = Mockery::mock(NotificationService::class);
 
         $handler = new CreateProjectHandler($em, $notificationService, $mapper);
         $handler->handle($dto);
-    }
-}
+    })->throws(PersistException::class);
+});
+

@@ -26,6 +26,7 @@ class UpdateProjectByIdController extends AbstractController
             $getProjectDTO = GetProjectDTO::from($projectId);
             $bodyDTO = $projectMapper->mapRequestToDTO($request->getContent(), UpdateProjectDTO::class);
 
+            /** @var UpdateProjectDTO $bodyDTO */
             $handler->handle($getProjectDTO, $bodyDTO);
 
             return $this->json(['success' => 'Project updated successfully'], JsonResponse::HTTP_OK);

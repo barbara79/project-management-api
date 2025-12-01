@@ -7,12 +7,16 @@ use App\Entity\Project;
 use App\Exception\NotFoundProjectException;
 use App\Handler\GetProjectByIdHandler;
 use App\Repository\ProjectRepository;
-use PHPUnit\Framework\TestCase;
+use Mockery;
 
-class GetProjectByIdHandlerTest extends TestCase
-{
-    public function testHandlerReturnHappyCase()
-    {
+
+afterEach(function () {
+    Mockery::close();
+});
+
+
+describe('testing getProjectById handler', function () {
+    it('find project by id successfully', function () {
         $projectId = 24;
 
         $project = new Project();
@@ -25,61 +29,54 @@ class GetProjectByIdHandlerTest extends TestCase
         $reflectorProperty = $reflector->getProperty('id');
         $reflectorProperty->setValue($project, $projectId);
 
-
-        $repo = $this->createMock(ProjectRepository::class);
-        $repo->expects($this->once())
-            ->method('find')
+        $repo = Mockery::mock(ProjectRepository::class);
+        $repo->shouldReceive('find')
             ->with($projectId)
-            ->willReturn($project);
+            ->andReturn($project)
+            ->once();
 
 
         $handler = new GetProjectByIdHandler($repo);
         $result = $handler->handle(GetProjectDTO::from($projectId));
 
-        $this->assertSame($projectId, $result->projectId);
-        $this->assertSame('Project title', $result->title);
-        $this->assertSame('John Doe', $result->owner);
-        $this->assertSame('2025-12-01', $result->deadline);
+        expect($result->projectId)->toEqual($projectId)
+            ->and($result->title)->toEqual('Project title')
+            ->and($result->deadline)->toEqual('2025-12-01')
+            ->and($result->owner)->toEqual('John Doe');
+    });
 
-    }
-
-    public function testHandlerNotFoundWhenProjectDoesNotExist()
-    {
-        $this->expectException(NotFoundProjectException::class);
+    it('throws NotFoundProjectException when project does not exist', function () {
         $projectId = 1;
 
-        $repo = $this->createMock(ProjectRepository::class);
-        $repo->expects($this->once())
-            ->method('find')
+        $repo = Mockery::mock(ProjectRepository::class);
+        $repo->shouldReceive('find')
             ->with($projectId)
-            ->willReturn(null);
+            ->andReturnNull()
+            ->once();
 
         $handler = new GetProjectByIdHandler($repo);
         $handler->handle(GetProjectDTO::from($projectId));
-    }
+    })->throws(NotFoundProjectException::class);
 
-    public function testReturnsNullWhenDeadlineIsInvalid()
-    {
+
+    it('returns null when deadline is invalid', function () {
         $projectId = 24;
-        $project = $this->createMock(Project::class);
-        $project->method('getId')->willReturn($projectId);
-        $project->method('getTitle')->willReturn('Project title');
-        $project->method('getDescription')->willReturn('Project description');
-        $project->method('getDeadline')->willReturn(null);
-        $project->method('getOwner')->willReturn('John Doe');
+        $project = Mockery::mock(Project::class);
+        $project->shouldReceive('getId')->andReturn($projectId);
+        $project->shouldReceive('getTitle')->andReturn('Project title');
+        $project->shouldReceive('getDescription')->andReturn('Project description');
+        $project->shouldReceive('getOwner')->andReturn('John Doe');
+        $project->shouldReceive('getDeadline')->andReturnNull();
 
-        $repo = $this->createMock(ProjectRepository::class);
-        $repo->expects($this->once())
-            ->method('find')
+        $repo = Mockery::mock(ProjectRepository::class);
+        $repo->shouldReceive('find')
             ->with($projectId)
-            ->willReturn($project);
+            ->andReturn($project)
+            ->once();
 
         $handler = new GetProjectByIdHandler($repo);
         $result = $handler->handle(GetProjectDTO::from($projectId));
 
-        $this->assertSame('', $result->deadline);
-    }
-
-
-}
-
+        expect('')->toEqual($result->deadline);
+    });
+});

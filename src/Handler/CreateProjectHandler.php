@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use App\DataMapper\ProjectMapper;
+use App\Dto\CreateProjectDTO;
 use App\Dto\ProjectDTOInterface;
 use App\Dto\ProjectDTOResponse;
 use App\Exception\PersistException;
@@ -21,6 +22,7 @@ class CreateProjectHandler
 
     public function handle(?ProjectDTOInterface $projectDTO): ProjectDTOResponse
     {
+        /** @var CreateProjectDTO $projectDTO */
         $project = $this->projectMapper->mapDTOToEntity($projectDTO);
 
         try {
@@ -35,6 +37,7 @@ class CreateProjectHandler
         return new ProjectDTOResponse(
             projectId: $project->getId(),
             title: $project->getTitle(),
+            description: $project->getDescription(),
             deadline: $project->getDeadline()?->format('Y-m-d') ?? '',
             owner: is_object($project->getOwner()) ? (string) $project->getOwner() : $project->getOwner()
         );

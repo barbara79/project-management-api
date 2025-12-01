@@ -1,4 +1,3 @@
-
 /.env.dev
 /.env.docker
 /config/secrets/prod/prod.decrypt.private.php

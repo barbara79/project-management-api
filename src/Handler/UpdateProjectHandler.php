@@ -28,6 +28,7 @@ class UpdateProjectHandler
             throw new NotFoundProjectException();
         }
 
+        $ownerChanged = false;
         if (isset($updateProjectDTO->title)) {
             $project->setTitle($updateProjectDTO->title);
         }
@@ -42,6 +43,7 @@ class UpdateProjectHandler
 
         if (isset($updateProjectDTO->owner)) {
             $project->setOwner($updateProjectDTO->owner);
+            $ownerChanged = true;
         }
 
         try {
@@ -51,10 +53,15 @@ class UpdateProjectHandler
             throw new PersistException();
         }
 
-        if (isset($updateProjectDTO->owner)) {
+        if ($ownerChanged) {
             $this->notificationService->notify($project);
         }
 
-        return null;
+        return new ProjectDTOResponse(
+            $project->getId(),
+            $project->getTitle(),
+            $project->getDescription(),
+                $project->getDeadline()?->format('Y-m-d') ?? '',
+            $project->getOwner());
     }
 }
