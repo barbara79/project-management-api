@@ -4,7 +4,6 @@ namespace App\Tests\Unit\Handler;
 
 use App\DataMapper\ProjectMapper;
 use App\Dto\CreateProjectDTO;
-use App\Entity\Project;
 use App\Exception\PersistException;
 use App\Handler\CreateProjectHandler;
 use App\Service\NotificationService;
