@@ -1,20 +1,13 @@
 <?php
 
+//putenv('SYMFONY_DEPRECATIONS_HELPER=weak_vendors'); // silence vendor deprecations
+//error_reporting(E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED);
+
 use App\Entity\Project;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "pest()" function to bind a different classes or traits.
-|
-*/
-
-pest()->extend(TestCase::class);
+uses(WebTestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

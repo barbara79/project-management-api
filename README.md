@@ -80,6 +80,16 @@ cd project-management-api
 docker compose up -d --build
 ```
 
+### Running the test coverage
+```bash
+./vendor/bin/pest --coverage
+```
+
+### Running the fixture for the test
+```bash
+php bin/console doctrine:fixtures:load --env=test --no-interaction
+```
+
 ## Author
 
 Barbara Palumbo 

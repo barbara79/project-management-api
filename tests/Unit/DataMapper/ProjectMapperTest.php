@@ -80,7 +80,7 @@ describe('testing project mapper', function () {
             ->andThrow(new DataMapperException());
 
         $mapper= new ProjectMapper($serializer);
-        $result = $mapper->mapRequestToDTO($jsonContent, CreateProjectDTO::class, []);
+        $mapper->mapRequestToDTO($jsonContent, CreateProjectDTO::class, []);
 
     })->throws(DataMapperException::class);
 });

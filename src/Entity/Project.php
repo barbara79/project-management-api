@@ -32,7 +32,11 @@ class Project
     /**
      * @var Collection<int, Task>
      */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project')]
+    #[ORM\OneToMany(
+        targetEntity: Task::class,
+        mappedBy: 'project',
+        fetch: 'LAZY'
+    )]
     private Collection $tasks;
 
     public function __construct()
