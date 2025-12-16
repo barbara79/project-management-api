@@ -89,6 +89,11 @@ docker compose up -d --build
 ```bash
 php bin/console doctrine:fixtures:load --env=test --no-interaction
 ```
+than run the tests
+
+```bash
+./vendor/bin/pest 
+```
 
 ## Author
 
