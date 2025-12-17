@@ -4,7 +4,7 @@ namespace Tests\Feature\Controller;
 
 
 use App\Entity\Project;
-use App\Handler\CreateProjectHandler;
+use App\Handler\DeleteProjectByIdHandler;
 use Mockery;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +41,19 @@ describe('testing Delete Project by id Controller', function () {
         expect($em->getRepository(\App\Entity\Project::class)->find($id))->toBeNull();
     });
 
+    it('returns 400 if project does not exist', function () {
+        $client = static::createClient();
+
+        $client->request('DELETE', '/projects/999999');
+
+        $response = $client->getResponse();
+
+        expect($response->getStatusCode())->toBe(Response::HTTP_BAD_REQUEST);
+
+        $data = json_decode($response->getContent(), true);
+        expect($data['error'])->toBe('Project Not Found');
+    });
+
     it('returns 400 since data mapper is failing    ', function () {
         /** @var KernelBrowser $client */
         $client = static::createClient();
@@ -66,16 +79,10 @@ describe('testing Delete Project by id Controller', function () {
     it('returns 500  if handler throws an unexpected error', function () {
         /** @var KernelBrowser $client */
         $client = static::createClient();
-        $handlerMocked = Mockery::mock(CreateProjectHandler::class);
+        $handlerMocked = Mockery::mock(DeleteProjectByIdHandler::class);
         $handlerMocked->shouldReceive('handle')->andThrow(new \Exception('Internal Server Error'));
-        $client->getContainer()->set(CreateProjectHandler::class, $handlerMocked);
-        $client->request(
-            'POST',
-            '/projects',
-            [],
-            [],
-            ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['title' => 'Test', 'description' => 'Test']));
+        $client->getContainer()->set(DeleteProjectByIdHandler::class, $handlerMocked);
+        $client->request('DELETE', '/projects/1');
         $response = $client->getResponse();
 
         expect($response->getStatusCode())->toBe(Response::HTTP_INTERNAL_SERVER_ERROR);

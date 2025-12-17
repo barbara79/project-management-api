@@ -27,9 +27,12 @@ class UpdateProjectByIdController extends AbstractController
             $bodyDTO = $projectMapper->mapRequestToDTO($request->getContent(), UpdateProjectDTO::class);
 
             /** @var UpdateProjectDTO $bodyDTO */
-            $handler->handle($getProjectDTO, $bodyDTO);
+            $project = $handler->handle($getProjectDTO, $bodyDTO);
 
-            return $this->json(['success' => 'Project updated successfully'], JsonResponse::HTTP_OK);
+            return $this->json([
+                'id' => $project->projectId,
+                'success' => 'Project updated successfully'
+            ], JsonResponse::HTTP_OK);
         } catch (ExceptionInterface $exception) {
             return $this->json(
                 ['error' => $exception->getMessage()],
