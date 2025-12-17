@@ -12,8 +12,7 @@ class NotificationService
     public function __construct(
         private LoggerInterface $logger,
     )
-    {
-    }
+    {}
 
     public function notify(Project $project)
     {

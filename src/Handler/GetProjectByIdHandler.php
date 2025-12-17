@@ -11,7 +11,6 @@ use App\Repository\ProjectRepository;
 
 class GetProjectByIdHandler
 {
-
     public function __construct(
         readonly ProjectRepository $projectRepository)
     {}
@@ -27,6 +26,7 @@ class GetProjectByIdHandler
         return new ProjectDTOResponse(
             projectId: $project->getId(),
             title: $project->getTitle(),
+            description: $project->getDescription(),
             deadline: $project->getDeadline()?->format('Y-m-d') ?? '',
             owner: $project->getOwner()
         );

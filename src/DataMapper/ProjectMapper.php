@@ -11,8 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProjectMapper
 {
     public function __construct(private SerializerInterface $serializer)
-    {
-    }
+    {}
 
     public function mapDTOToEntity(CreateProjectDTO $projectDTO): Project
     {

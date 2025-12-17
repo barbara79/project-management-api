@@ -28,11 +28,13 @@ class CreateProjectController extends AbstractController
     public function index(Request $request, CreateProjectHandler $handler, ProjectMapper $projectMapper): JsonResponse
     {
         try {
-            //TODO check type of return of content
             $projectDTO = $projectMapper->mapRequestToDTO($request->getContent(), CreateProjectDTO::class);
-            $handler->handle($projectDTO);
+            $project = $handler->handle($projectDTO);
 
-            return $this->json(['success' => 'Project created successfully'], JsonResponse::HTTP_CREATED);
+            return $this->json([
+                'id' => $project->projectId,
+                'success' => 'Project created successfully'
+            ], JsonResponse::HTTP_CREATED);
         } catch (ExceptionInterface $exception) {
 
             return $this->json(

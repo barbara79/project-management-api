@@ -11,6 +11,8 @@ class ProjectDTOResponse
         public int $projectId,
         #[Assert\NotBlank]
         public string $title,
+        #[Assert\NotNull]
+        public string $description,
         #[Assert\NotBlank]
         public string $deadline,
         public string $owner
