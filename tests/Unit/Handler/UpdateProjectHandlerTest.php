@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unit\Handler;
 
-use App\Dto\GetProjectDTO;
-use App\Dto\UpdateProjectDTO;
+use App\Dto\Project\GetProjectDTO;
+use App\Dto\Project\UpdateProjectDTO;
 use App\Exception\NotFoundProjectException;
 use App\Exception\PersistException;
-use App\Handler\UpdateProjectHandler;
+use App\Handler\Project\UpdateProjectHandler;
 use App\Repository\ProjectRepository;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;

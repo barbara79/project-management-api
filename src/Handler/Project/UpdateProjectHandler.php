@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Handler;
+namespace App\Handler\Project;
 
-use App\Dto\GetProjectDTO;
-use App\Dto\ProjectDTOResponse;
-use App\Dto\UpdateProjectDTO;
+use App\Dto\Project\GetProjectDTO;
+use App\Dto\Project\ProjectDTOResponse;
+use App\Dto\Project\UpdateProjectDTO;
+use App\Exception\NotFoundProjectException;
 use App\Exception\PersistException;
 use App\Repository\ProjectRepository;
-use App\Exception\NotFoundProjectException;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 

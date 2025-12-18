@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto;
+namespace App\DTO\Project;
 
 readonly class GetProjectDTO implements ProjectDTOInterface
 {

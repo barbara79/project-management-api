@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Dto;
-
+namespace App\DTO\Project;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class UpdateProjectDTO implements ProjectDTOInterface
+readonly class CreateProjectDTO implements ProjectDTOInterface
 {
     public function __construct(
         #[Assert\NotBlank(message: "The project title is required.")]

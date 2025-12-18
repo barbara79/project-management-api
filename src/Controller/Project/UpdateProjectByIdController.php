@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Project;
 
-use App\DataMapper\ProjectMapper;
-use App\Dto\GetProjectDTO;
-use App\Dto\UpdateProjectDTO;
+use App\DataMapper\Project\ProjectMapper;
+use App\Dto\Project\GetProjectDTO;
+use App\Dto\Project\UpdateProjectDTO;
 use App\Exception\ExceptionInterface;
-use App\Handler\UpdateProjectHandler;
+use App\Handler\Project\UpdateProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

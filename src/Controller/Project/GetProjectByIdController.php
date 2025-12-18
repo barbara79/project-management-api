@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Project;
 
-use App\Dto\GetProjectDTO;
+use App\Dto\Project\GetProjectDTO;
 use App\Exception\ExceptionInterface;
-use App\Handler\GetProjectByIdHandler;
+use App\Handler\Project\GetProjectByIdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;

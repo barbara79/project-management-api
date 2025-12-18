@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Project;
 
-use App\Dto\CreateProjectDTO;
-use App\Handler\CreateProjectHandler;
+use App\DataMapper\Project\ProjectMapper;
+use App\Dto\Project\CreateProjectDTO;
+use App\Exception\ExceptionInterface;
+use App\Handler\Project\CreateProjectHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use App\DataMapper\ProjectMapper;
-use App\Exception\ExceptionInterface;
 
 class CreateProjectController extends AbstractController
 {

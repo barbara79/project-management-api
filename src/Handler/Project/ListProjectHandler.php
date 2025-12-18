@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Handler;
+namespace App\Handler\Project;
 
 
-use App\Dto\ProjectDTOResponse;
+use App\Dto\Project\ProjectDTOResponse;
 use App\Exception\NotFoundProjectException;
 use App\Repository\ProjectRepository;
 

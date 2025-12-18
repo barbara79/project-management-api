@@ -2,10 +2,10 @@
 
 namespace App\Tests\Unit\Handler;
 
-use App\Dto\GetProjectDTO;
+use App\Dto\Project\GetProjectDTO;
 use App\Entity\Project;
 use App\Exception\NotFoundProjectException;
-use App\Handler\GetProjectByIdHandler;
+use App\Handler\Project\GetProjectByIdHandler;
 use App\Repository\ProjectRepository;
 use Mockery;
 

@@ -4,7 +4,7 @@ namespace Tests\Feature\Controller;
 
 
 use App\Exception\NotFoundProjectException;
-use App\Handler\ListProjectHandler;
+use App\Handler\Project\ListProjectHandler;
 use Mockery;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,10 +1,8 @@
 <?php
 
-//putenv('SYMFONY_DEPRECATIONS_HELPER=weak_vendors'); // silence vendor deprecations
-//error_reporting(E_ALL & ~E_USER_DEPRECATED & ~E_DEPRECATED);
-
 use App\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Validator\Validation;
 
 uses(WebTestCase::class)->in('Feature');
 
@@ -62,4 +60,13 @@ function makeProject(
     $reflectorProperty->setValue($project, $projectId);
 
     return $project;
+}
+
+function validate(object $dto): array
+{
+    $validator = Validation::createValidatorBuilder()
+        ->enableAttributeMapping()
+        ->getValidator();
+
+    return iterator_to_array($validator->validate($dto));
 }

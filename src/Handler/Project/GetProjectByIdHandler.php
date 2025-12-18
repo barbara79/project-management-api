@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Handler;
+namespace App\Handler\Project;
 
-use App\Dto\GetProjectDTO;
-use App\Dto\ProjectDTOInterface;
-use App\Dto\ProjectDTOResponse;
-use App\Entity\Project;
+use App\Dto\Project\ProjectDTOInterface;
+use App\Dto\Project\ProjectDTOResponse;
 use App\Exception\NotFoundProjectException;
 use App\Repository\ProjectRepository;
 

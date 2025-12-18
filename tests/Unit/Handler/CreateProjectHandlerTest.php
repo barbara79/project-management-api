@@ -2,10 +2,10 @@
 
 namespace App\Tests\Unit\Handler;
 
-use App\DataMapper\ProjectMapper;
-use App\Dto\CreateProjectDTO;
+use App\DataMapper\Project\ProjectMapper;
+use App\Dto\Project\CreateProjectDTO;
 use App\Exception\PersistException;
-use App\Handler\CreateProjectHandler;
+use App\Handler\Project\CreateProjectHandler;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;

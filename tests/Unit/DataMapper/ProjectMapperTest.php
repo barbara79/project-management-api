@@ -1,7 +1,7 @@
 <?php
 
-use App\DataMapper\ProjectMapper;
-use App\Dto\CreateProjectDTO;
+use App\DataMapper\Project\ProjectMapper;
+use App\Dto\Project\CreateProjectDTO;
 use App\Entity\Project;
 use App\Exception\DataMapperException;
 use Symfony\Component\Serializer\SerializerInterface;

@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Handler;
 
-use App\Dto\ProjectDTOResponse;
+use App\Dto\Project\ProjectDTOResponse;
 use App\Exception\NotFoundProjectException;
-use App\Handler\ListProjectHandler;
+use App\Handler\Project\ListProjectHandler;
 use App\Repository\ProjectRepository;
 use Mockery;
 

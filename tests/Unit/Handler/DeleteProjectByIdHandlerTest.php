@@ -2,10 +2,10 @@
 
 namespace App\Tests\Unit\Handler;
 
-use App\Dto\GetProjectDTO;
+use App\Dto\Project\GetProjectDTO;
 use App\Exception\NotFoundProjectException;
 use App\Exception\PersistException;
-use App\Handler\DeleteProjectByIdHandler;
+use App\Handler\Project\DeleteProjectByIdHandler;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;

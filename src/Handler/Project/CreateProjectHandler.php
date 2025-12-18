@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Handler;
+namespace App\Handler\Project;
 
-use App\DataMapper\ProjectMapper;
-use App\Dto\CreateProjectDTO;
-use App\Dto\ProjectDTOInterface;
-use App\Dto\ProjectDTOResponse;
+use App\DataMapper\Project\ProjectMapper;
+use App\Dto\Project\CreateProjectDTO;
+use App\Dto\Project\ProjectDTOInterface;
+use App\Dto\Project\ProjectDTOResponse;
 use App\Exception\PersistException;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;

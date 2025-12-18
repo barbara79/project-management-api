@@ -3,7 +3,7 @@
 namespace Tests\Feature\Controller;
 
 
-use App\Handler\CreateProjectHandler;
+use App\Handler\Project\CreateProjectHandler;
 use Mockery;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;

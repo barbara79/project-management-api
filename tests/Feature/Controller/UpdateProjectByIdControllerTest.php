@@ -5,7 +5,7 @@ namespace Tests\Feature\Controller;
 
 
 use App\Entity\Project;
-use App\Handler\UpdateProjectHandler;
+use App\Handler\Project\UpdateProjectHandler;
 use Mockery;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
