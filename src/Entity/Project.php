@@ -3,13 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use App\Repository\TaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Project
 {
     #[ORM\Id]
@@ -33,9 +34,10 @@ class Project
      * @var Collection<int, Task>
      */
     #[ORM\OneToMany(
-        targetEntity: Task::class,
         mappedBy: 'project',
-        fetch: 'LAZY'
+        targetEntity: Task::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
     )]
     private Collection $tasks;
 

@@ -17,31 +17,28 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message: "The task title is required.")]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: "The task title cannot exceed {{ limit }} characters."
-    )]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\Length(
-        max: 2000,
-        maxMessage: "The description cannot exceed {{ limit }} characters."
-    )]
-    private ?string $description = null;
+    #[ORM\Column(enumType: TaskStatus::class)]
+    private TaskStatus $status;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message: "Status is required.")]
-    #[Assert\Choice(
-        choices: [TaskStatus::TODO, TaskStatus::IN_PROGRESS, TaskStatus::DONE, TaskStatus::ON_HOLD],
-        message: "Invalid status. Allowed values are: todo, in_progress, done, on_hold."
-    )]
-    private ?string $status = null;
+    private ?TaskStatus $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[Assert\NotNull(message: "Each task must belong to a project.")]
-    private ?Project $project = null;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Project $project;
+
+    public function __construct(
+        string $title,
+        TaskStatus $status,
+        Project $project
+    ) {
+        $this->title = $title;
+        $this->status = $status;
+        $this->project = $project;
+    }
 
     public function getId(): ?int
     {

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller\Project;
+namespace App\Controller\Task;
 
-use App\DataMapper\Project\ProjectMapper;
-use App\Dto\Project\CreateProjectDTO;
+use App\DataMapper\Task\TaskMapper;
+use App\DTO\Task\CreateTaskDTO;
 use App\Exception\ExceptionInterface;
-use App\Handler\Project\CreateProjectHandler;
+use App\Handler\Task\CreateTaskHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CreateProjectController extends AbstractController
+class CreateTaskController extends AbstractController
 {
 
     public function __construct(
@@ -21,19 +21,19 @@ class CreateProjectController extends AbstractController
     {}
 
     #[Route(
-        path:'/projects',
-        name: 'project_create',
+        path:'/projects/task',
+        name: 'task_create',
         methods: ['POST']
     )]
-    public function index(Request $request, CreateProjectHandler $handler, ProjectMapper $projectMapper): JsonResponse
+    public function index(Request $request, CreateTaskHandler $handler, TaskMapper $taskMapper): JsonResponse
     {
         try {
-            $projectDTO = $projectMapper->mapRequestToDTO($request->getContent(), CreateProjectDTO::class);
-            $project = $handler->handle($projectDTO);
+            $taskDTO = $taskMapper->mapRequestToDTO($request->getContent(), CreateTaskDTO::class);
+            $task = $handler->handle($taskDTO);
 
             return $this->json([
-                'id' => $project->projectId,
-                'success' => 'Project created successfully'
+                'id' => $task->taskId,
+                'success' => 'Task created successfully'
             ], JsonResponse::HTTP_CREATED);
         } catch (ExceptionInterface $exception) {
 
