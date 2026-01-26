@@ -1,31 +1,51 @@
 # Symfony Project Management API (Clean Architecture / DDD-Inspired)
 
-This Symfony REST API follows Clean Architecture principles with Domain-Driven Design (DDD) inspirations.
-It emphasizes separation of concerns, testability, and scalability.
 
-Rather than mixing logic inside controllers, the system is organized into explicit layers:
+This project is a backend API designed to demonstrate how to build a **scalable, testable, and maintainable Symfony application** using Clean Architecture principles with Domain-Driven Design (DDD) inspiration.
+
+The focus is not on delivering a full product, but on showcasing **professional backend architecture**, clear separation of concerns, and production-oriented design decisions.
+
+---
+
+## Project Purpose
+
+The goal of this project is to demonstrate:
+
+- How to structure a Symfony API beyond traditional MVC
+- How to isolate business logic from framework concerns
+- How to design backend systems that are easy to test, evolve, and scale
+- How to model business use cases using explicit application layers
+
+This repository is intended as a **technical portfolio project** for backend-oriented roles.
+
+---
+
+## 🚧 Project Status
+
+⚠️ **Work in progress**
+
+Core architectural patterns are implemented and stable.  
+Some interactions between domain concepts (e.g. Projects ↔ Tasks workflows) are intentionally incomplete and planned for future iterations.
+
+This reflects a realistic development approach where:
+- architecture is validated early
+- features evolve incrementally
+- domain complexity grows over time
+
+---
+
+## Architectural Overview
+
+The application follows a Clean Architecture approach with explicit application layers:
 
 Controller → DTO → Mapper → Handler → Entity → Repository → Service
 
----
-
-## Goal
-
-This project demonstrates a professional Symfony architecture where each layer contributes to a clear and maintainable flow from HTTP request to database persistence.
-
-Objectives include:
-
-- Controllers: Handle HTTP input and delegate responsibilities to Handlers, keeping domain logic out.
-- Handlers: Encapsulate business logic in dedicated classes, isolated from framework concerns.
-- DTOs (Data Transfer Objects): Immutable, validated input objects that ensure strong typing and safe API boundaries before reaching the domain. 
-- Mappers: Safely transform data between layers (DTO ↔ Entity ↔ Response), isolating conversion logic from business workflows. 
-- Entities: Remain clean, persistence-focused, and free from framework or validation concerns. 
-- Services: Handle external integrations, like logging or notifications, keeping side effects isolated from domain logic. 
-- Repositories: Abstract database operations, decoupling domain logic from persistence.
+This structure enforces strict separation of concerns and ensures that business logic
+remains isolated from framework and infrastructure details.
 
 ---
 
-## Architecture Overview
+## Layer Responsibilities
 
 | Layer | Responsibility | Why It Exists |
 |--------|----------------|----------------|
@@ -37,6 +57,18 @@ Objectives include:
 | **Entity** | Core domain model representation | Free from validation or infrastructure logic |
 | **Service** | Handles side effects (logging, notifications, integrations) | Keeps domain logic predictable and testable |
 | **Exception Layer** | Custom domain-specific exceptions | Provides consistent error handling across layers |
+
+---
+
+## 🔁 Request Flow
+
+1. **Controller** receives an HTTP request and delegates execution
+2. **DTO** validates and encapsulates input data
+3. **Mapper** converts DTOs into domain entities
+4. **Handler** executes the business use case
+5. **Repository** persists or retrieves entities
+6. **Service** handles side effects (logging, notifications, etc.)
+7. **Controller** returns a structured JSON response
 
 ---
 
@@ -53,46 +85,45 @@ Objectives include:
 
 ---
 
-## Benefits
+## Key Benefits
 
-| Benefit | Explanation |
-|--------|----------------|
-| **Separation of Concerns** | Each layer has a focused responsibility |
-| **Testability** | Handlers, Mappers, and DTOs can be tested in isolation |
-| **Maintainability** | Adding features or fields requires minimal coupling |
-| **Framework Independence** | Business logic does not depend on Symfony internals |
-| **Scalability** | Handlers and Services can grow independently |
-| **Type Safety** | DTOs and readonly objects prevent silent data issues |
+- **Separation of Concerns** — each layer has a focused responsibility
+- **Testability** — handlers, mappers, and DTOs are easily testable
+- **Maintainability** — changes are localized and predictable
+- **Framework Independence** — business logic is not tied to Symfony
+- **Scalability** — architecture supports growing complexity
+- **Type Safety** — DTOs and readonly objects prevent silent bugs
 
 ---
 
-## Installation
+## 🧪 Testing
 
-### Clone the repository
+The project uses **Pest** for automated testing.
 
-```bash
-git clone https://github.com/barbara79/project-management-api.git
-cd project-management-api
-```
-
-### Install dependencies
-``` bash
-docker compose up -d --build
-```
-
-### Running the test coverage
+Run test coverage:
 ```bash
 ./vendor/bin/pest --coverage
 ```
 
-### Running the fixture for the test
-```bash
+Load fixtures for testing:
+``` bash
 php bin/console doctrine:fixtures:load --env=test --no-interaction
 ```
-than run the tests
+
+Run tests:
+```bash
+./vendor/bin/pest
+```
+
+## Installation
 
 ```bash
-./vendor/bin/pest 
+git clone https://github.com/barbara79/project-management-api.git
+
+
+cd project-management-api
+
+docker compose up -d --build
 ```
 
 ## Author
