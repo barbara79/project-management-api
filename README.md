@@ -132,5 +132,4 @@ Barbara Palumbo
 
 Clean Architecture enthusiast • Software Developer
 
-linkedin.com/in/barbara-palumbo-b3356a18b
-
+[LinkedIn](linkedin.com/in/barbara-palumbo-b3356a18b)
