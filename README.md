@@ -129,8 +129,8 @@ docker compose up -d --build
 ## Author
 
 Barbara Palumbo 
-
-Clean Architecture enthusiast • Software Developer
+Backend & Full-Stack Software Developer 
+Clean Architecture, Observability & AI Enthusiast  
 
 [LinkedIn](https://www.linkedin.com/in/barbara-palumbo-b3356a18b)
 
