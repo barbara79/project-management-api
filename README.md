@@ -20,7 +20,7 @@ This repository is intended as a **technical portfolio project** for backend-ori
 
 ---
 
-## 🚧 Project Status
+## Project Status
 
 ⚠️ **Work in progress**
 
@@ -60,7 +60,7 @@ remains isolated from framework and infrastructure details.
 
 ---
 
-## 🔁 Request Flow
+## Request Flow
 
 1. **Controller** receives an HTTP request and delegates execution
 2. **DTO** validates and encapsulates input data
@@ -96,7 +96,7 @@ remains isolated from framework and infrastructure details.
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The project uses **Pest** for automated testing.
 
@@ -132,5 +132,5 @@ Barbara Palumbo
 
 Clean Architecture enthusiast • Software Developer
 
-🌐 linkedin.com/in/barbara-palumbo-b3356a18b
+linkedin.com/in/barbara-palumbo-b3356a18b
 
