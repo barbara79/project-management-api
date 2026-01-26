@@ -133,3 +133,9 @@ Barbara Palumbo
 Clean Architecture enthusiast • Software Developer
 
 [LinkedIn](https://www.linkedin.com/in/barbara-palumbo-b3356a18b)
+
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
