@@ -22,7 +22,7 @@ This repository is intended as a **technical portfolio project** for backend-ori
 
 ## Project Status
 
-⚠️ **Work in progress**
+**Work in progress**
 
 Core architectural patterns are implemented and stable.  
 Some interactions between domain concepts (e.g. Projects ↔ Tasks workflows) are intentionally incomplete and planned for future iterations.
