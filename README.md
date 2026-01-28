@@ -126,6 +126,16 @@ cd project-management-api
 docker compose up -d --build
 ```
 
+## Roadmap / Planned Improvements
+
+This repository is a work in progress and is intended as a technical showcase.
+The following improvements are planned for future iterations:
+
+- Add CI pipeline (GitHub Actions) for automated tests and static analysis
+- Introduce static analysis tools (PHPStan / Psalm)
+- Improve API documentation (OpenAPI / Swagger)
+- Production-grade configuration and security hardening
+
 ## Author
 
 Barbara Palumbo 
