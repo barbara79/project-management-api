@@ -5,7 +5,7 @@
 /var/
 /vendor/
 composer.lock
-.idea
+/.idea
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
